@@ -4,7 +4,8 @@ import { AmbientScene } from "@/components/AmbientScene";
 import { PoemCard } from "@/components/PoemCard";
 import { PoemModal } from "@/components/PoemModal";
 import { poems } from "@/data/poems";
-import bgImage from "@assets/bg-portrait.png";
+import portraitBg from "@assets/bg-portrait.png";
+import desktopBg from "@assets/airport gc uniform.png";
 
 export default function Home() {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -56,11 +57,18 @@ export default function Home() {
       <section className="relative h-[100dvh] w-full overflow-hidden flex items-center justify-center">
         {/* Background Image with parallax */}
         <motion.div 
-          className="absolute inset-0 z-0 scale-[1.15] w-full h-full"
+          className="absolute inset-0 z-0 scale-[1.15] lg:hidden w-full h-full bg-cover bg-center bg-no-repeat"
           style={{ 
-            backgroundImage: `url(${bgImage})`,
-            backgroundPosition: "center",
-            backgroundSize: "cover",
+            backgroundImage: `url(${portraitBg})`,
+            y: yImage,
+            x: springX,
+            top: springY,
+          }}
+        />
+        <motion.div 
+          className="absolute inset-0 z-0 hidden lg:block w-full h-full bg-cover bg-center bg-no-repeat"
+          style={{ 
+            backgroundImage: `url(${desktopBg})`,
             y: yImage,
             x: springX,
             top: springY,
