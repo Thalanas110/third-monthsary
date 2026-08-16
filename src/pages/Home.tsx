@@ -81,7 +81,7 @@ export default function Home() {
             transition={{ duration: 1.5, ease: "easeOut", delay: 0.2 }}
             className="font-serif text-7xl md:text-9xl text-foreground font-semibold tracking-tighter mb-6 drop-shadow-2xl"
           >
-            Departures
+            Sugatang Gugma
           </motion.h1>
           
           <motion.p 
@@ -90,7 +90,7 @@ export default function Home() {
             transition={{ duration: 1.5, ease: "easeOut", delay: 1 }}
             className="text-muted-foreground text-lg md:text-xl font-light tracking-wide uppercase"
           >
-            Nine poems for leaving and staying.
+            Poems from my heart to yours.
           </motion.p>
         </motion.div>
 
@@ -132,7 +132,7 @@ export default function Home() {
 
       {/* Footer */}
       <footer className="relative z-10 border-t border-white/5 py-12 text-center text-muted-foreground/50 text-sm font-light uppercase tracking-widest">
-        &copy; {new Date().getFullYear()} Departures
+        &copy; {new Date().getFullYear()} Sugatang Gugma
       </footer>
 
       {/* Poem Modal */}

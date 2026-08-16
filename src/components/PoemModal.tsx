@@ -84,7 +84,7 @@ export function PoemModal({ poem, onClose, onNext, onPrev, hasPrev, hasNext }: P
             </button>
 
             <div className="reading-surface__collection" aria-label="Collection and poem number">
-              <span>Departures</span>
+              <span>Sugatang Gugma</span>
               <span>{poem.numeral} / IX</span>
             </div>
 
