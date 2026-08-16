@@ -4,7 +4,7 @@ import { AmbientScene } from "@/components/AmbientScene";
 import { PoemCard } from "@/components/PoemCard";
 import { PoemModal } from "@/components/PoemModal";
 import { poems } from "@/data/poems";
-import bgImage from "@assets/ChatGPT_Image_Aug_5,_2026,_10_04_45_PM_1785939301826.png";
+import bgImage from "@assets/bg-portrait.png";
 
 export default function Home() {
   const containerRef = useRef<HTMLDivElement>(null);
