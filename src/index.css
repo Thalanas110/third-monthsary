@@ -167,6 +167,13 @@
 
   body {
     @apply font-sans antialiased bg-background text-foreground;
+    overflow-x: hidden;
+  }
+}
+
+@media (max-width: 640px) {
+  body {
+    min-width: 320px;
   }
 }
 

@@ -48,25 +48,23 @@ export default function Home() {
   return (
     <div 
       ref={containerRef}
-      className="relative min-h-[100dvh] w-full bg-background overflow-x-hidden selection:bg-primary selection:text-primary-foreground"
+      className="relative min-h-[100svh] w-full overflow-x-hidden bg-background selection:bg-primary selection:text-primary-foreground"
     >
       {/* 3D Ambient layer - fixed behind everything */}
       <AmbientScene />
 
       {/* Hero Section */}
-      <section className="relative h-[100dvh] w-full overflow-hidden flex items-center justify-center">
+      <section className="relative flex min-h-[100svh] w-full items-center justify-center overflow-hidden">
         {/* Background Image with parallax */}
         <motion.div 
-          className="absolute inset-0 z-0 scale-[1.15] lg:hidden w-full h-full bg-cover bg-center bg-no-repeat"
+          className="absolute inset-[-4%] z-0 h-[108%] w-[108%] bg-cover bg-center bg-no-repeat lg:hidden"
           style={{ 
             backgroundImage: `url(${portraitBg})`,
-            y: yImage,
             x: springX,
-            top: springY,
           }}
         />
         <motion.div 
-          className="absolute inset-0 z-0 hidden lg:block w-full h-full bg-cover bg-center bg-no-repeat"
+          className="absolute inset-[-8%] z-0 hidden h-[116%] w-[116%] bg-cover bg-center bg-no-repeat lg:block"
           style={{ 
             backgroundImage: `url(${desktopBg})`,
             y: yImage,
@@ -87,7 +85,7 @@ export default function Home() {
             initial={{ opacity: 0, y: 30, filter: "blur(10px)" }}
             animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
             transition={{ duration: 1.5, ease: "easeOut", delay: 0.2 }}
-            className="font-serif text-7xl md:text-9xl text-foreground font-semibold tracking-tighter mb-6 drop-shadow-2xl"
+            className="mb-6 max-w-[min(92vw,72rem)] font-serif text-[clamp(3.25rem,12vw,9rem)] font-semibold leading-[0.88] tracking-tighter text-foreground drop-shadow-2xl"
           >
             Sugatang Gugma
           </motion.h1>
@@ -96,7 +94,7 @@ export default function Home() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 1.5, ease: "easeOut", delay: 1 }}
-            className="text-muted-foreground text-lg md:text-xl font-light tracking-wide uppercase"
+            className="px-4 text-center text-[clamp(0.72rem,2.5vw,1.25rem)] font-light uppercase tracking-[0.14em] text-muted-foreground"
           >
             Poems from my heart to yours.
           </motion.p>
@@ -108,7 +106,7 @@ export default function Home() {
           animate={{ opacity: 1 }}
           transition={{ duration: 1, delay: 2 }}
           style={{ opacity: opacityHero }}
-          className="absolute bottom-12 left-1/2 -translate-x-1/2 flex flex-col items-center gap-4 z-10"
+          className="absolute bottom-[max(2rem,env(safe-area-inset-bottom))] left-1/2 z-10 flex -translate-x-1/2 flex-col items-center gap-4"
         >
           <div className="w-[1px] h-16 bg-gradient-to-b from-transparent via-white/50 to-white/0 overflow-hidden relative">
             <motion.div 
@@ -121,12 +119,12 @@ export default function Home() {
       </section>
 
       {/* Gallery Section */}
-      <section className="relative z-10 w-full max-w-7xl mx-auto px-6 py-32 md:py-48 min-h-screen">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-12 lg:gap-16">
+      <section className="relative z-10 mx-auto min-h-screen w-full max-w-7xl px-4 py-20 sm:px-6 sm:py-28 md:py-48">
+        <div className="grid grid-cols-1 gap-6 sm:gap-8 md:grid-cols-2 md:gap-12 lg:grid-cols-3 lg:gap-16">
           {poems.map((poem, idx) => (
             <div 
               key={poem.id} 
-              className={`h-[400px] ${idx % 3 === 1 ? 'lg:mt-24' : ''} ${idx % 3 === 2 ? 'lg:mt-12' : ''} ${idx % 2 === 1 ? 'md:mt-16 lg:mt-0' : ''}`}
+              className={`h-[360px] sm:h-[400px] ${idx % 3 === 1 ? 'lg:mt-24' : ''} ${idx % 3 === 2 ? 'lg:mt-12' : ''} ${idx % 2 === 1 ? 'md:mt-16 lg:mt-0' : ''}`}
             >
               <PoemCard 
                 poem={poem} 
