@@ -1,7 +1,7 @@
 import { motion, AnimatePresence } from "framer-motion";
-import { Poem } from "@/data/poems";
-import { X, ArrowLeft, ArrowRight } from "lucide-react";
-import { useEffect, useRef } from "react";
+import { Poem, poems } from "@/data/poems";
+import { X, ArrowLeft, ArrowRight, Play, Pause, Sun, Moon } from "lucide-react";
+import { useEffect, useRef, useState, useCallback } from "react";
 
 interface PoemModalProps {
   poem: Poem | null;
@@ -12,8 +12,60 @@ interface PoemModalProps {
   hasNext: boolean;
 }
 
+function toRoman(num: number): string {
+  const map: [number, string][] = [
+    [9, "IX"], [8, "VIII"], [7, "VII"], [6, "VI"], [5, "V"],
+    [4, "IV"], [3, "III"], [2, "II"], [1, "I"],
+  ];
+  let result = "";
+  for (const [value, numeral] of map) {
+    while (num >= value) {
+      result += numeral;
+      num -= value;
+    }
+  }
+  return result;
+}
+
 export function PoemModal({ poem, onClose, onNext, onPrev, hasPrev, hasNext }: PoemModalProps) {
   const closeButtonRef = useRef<HTMLButtonElement>(null);
+  const audioRef = useRef<HTMLAudioElement>(null);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [progress, setProgress] = useState(0);
+  const [duration, setDuration] = useState(0);
+  const [isDark, setIsDark] = useState(() => {
+    try {
+      return localStorage.getItem("reading-surface-dark") === "true";
+    } catch {
+      return false;
+    }
+  });
+
+  const toggleDark = useCallback(() => {
+    setIsDark((prev) => {
+      const next = !prev;
+      try {
+        localStorage.setItem("reading-surface-dark", String(next));
+      } catch {}
+      return next;
+    });
+  }, []);
+
+  const togglePlay = useCallback(() => {
+    const audio = audioRef.current;
+    if (!audio) return;
+    if (audio.paused) {
+      audio.play();
+    } else {
+      audio.pause();
+    }
+  }, []);
+
+  useEffect(() => {
+    setIsPlaying(false);
+    setProgress(0);
+    setDuration(0);
+  }, [poem?.id]);
 
   useEffect(() => {
     if (!poem) return;
@@ -55,8 +107,18 @@ export function PoemModal({ poem, onClose, onNext, onPrev, hasPrev, hasNext }: P
       if (previousActiveElement?.isConnected) {
         previousActiveElement.focus();
       }
+      if (audioRef.current) {
+        audioRef.current.pause();
+        setIsPlaying(false);
+      }
     };
   }, [poem, onClose, onNext, onPrev, hasPrev, hasNext]);
+
+  const formatTime = (seconds: number) => {
+    const m = Math.floor(seconds / 60);
+    const s = Math.floor(seconds % 60);
+    return `${m}:${s.toString().padStart(2, "0")}`;
+  };
 
   return (
     <AnimatePresence>
@@ -69,7 +131,7 @@ export function PoemModal({ poem, onClose, onNext, onPrev, hasPrev, hasNext }: P
           role="dialog"
           aria-modal="true"
           aria-labelledby={`poem-title-${poem.id}`}
-          className="reading-surface fixed inset-0 z-50 overflow-y-auto"
+          className={`reading-surface fixed inset-0 z-50 overflow-y-auto${isDark ? " reading-surface--dark" : ""}`}
         >
           <header className="reading-surface__header">
             <button
@@ -85,10 +147,22 @@ export function PoemModal({ poem, onClose, onNext, onPrev, hasPrev, hasNext }: P
 
             <div className="reading-surface__collection" aria-label="Collection and poem number">
               <span>Sugatang Gugma</span>
-              <span>{poem.numeral} / IX</span>
+              <span>{poem.numeral} / {toRoman(poems.length)}</span>
             </div>
 
             <nav className="reading-surface__header-nav" aria-label="Poem navigation">
+              <button
+                type="button"
+                aria-label={isDark ? "Switch to light mode" : "Switch to dark mode"}
+                onClick={toggleDark}
+                className="reading-surface__theme-toggle"
+              >
+                {isDark ? (
+                  <Sun aria-hidden="true" size={16} strokeWidth={1.8} />
+                ) : (
+                  <Moon aria-hidden="true" size={16} strokeWidth={1.8} />
+                )}
+              </button>
               <button
                 type="button"
                 aria-label="Previous poem"
@@ -124,6 +198,64 @@ export function PoemModal({ poem, onClose, onNext, onPrev, hasPrev, hasNext }: P
                   <p className="reading-surface__tagline">{poem.tagline}</p>
                 </div>
 
+                {poem.audioSrc && (
+                  <div className="reading-surface__audio-player">
+                    <audio
+                      ref={audioRef}
+                      src={poem.audioSrc}
+                      preload="metadata"
+                      onPlay={() => setIsPlaying(true)}
+                      onPause={() => setIsPlaying(false)}
+                      onTimeUpdate={() => {
+                        const audio = audioRef.current;
+                        if (audio) setProgress(audio.currentTime);
+                      }}
+                      onLoadedMetadata={() => {
+                        const audio = audioRef.current;
+                        if (audio) setDuration(audio.duration);
+                      }}
+                      onEnded={() => setIsPlaying(false)}
+                    />
+                    <button
+                      type="button"
+                      aria-label={isPlaying ? "Pause" : "Play"}
+                      onClick={togglePlay}
+                      className="reading-surface__audio-play"
+                    >
+                      {isPlaying ? (
+                        <Pause aria-hidden="true" size={16} strokeWidth={2} />
+                      ) : (
+                        <Play aria-hidden="true" size={16} strokeWidth={2} />
+                      )}
+                    </button>
+                    <div className="reading-surface__audio-track">
+                      <div
+                        className="reading-surface__audio-progress"
+                        style={{ width: duration ? `${(progress / duration) * 100}%` : "0%" }}
+                      />
+                      <input
+                        type="range"
+                        min={0}
+                        max={duration || 0}
+                        step={0.1}
+                        value={progress}
+                        onChange={(e) => {
+                          const audio = audioRef.current;
+                          if (audio) {
+                            audio.currentTime = Number(e.target.value);
+                            setProgress(audio.currentTime);
+                          }
+                        }}
+                        className="reading-surface__audio-slider"
+                        aria-label="Seek"
+                      />
+                    </div>
+                    <span className="reading-surface__audio-time">
+                      {formatTime(progress)} / {formatTime(duration)}
+                    </span>
+                  </div>
+                )}
+
                 <article className="reading-surface__poem" aria-label={`${poem.title} poem text`}>
                   {(() => {
                     const stanzas: string[][] = [];
@@ -142,9 +274,18 @@ export function PoemModal({ poem, onClose, onNext, onPrev, hasPrev, hasNext }: P
 
                     return stanzas.map((stanza, stanzaIndex) => (
                       <div key={stanzaIndex} className="reading-surface__stanza">
-                        {stanza.map((line, lineIndex) => (
-                          <p key={`${stanzaIndex}-${lineIndex}`}>{line}</p>
-                        ))}
+                        {stanza.map((line, lineIndex) => {
+                          if (/^\[.+\]$/.test(line)) {
+                            return <p key={`${stanzaIndex}-${lineIndex}`} className="reading-surface__section-marker">{line}</p>;
+                          }
+                          if (/^\*.+\*$/.test(line)) {
+                            return <p key={`${stanzaIndex}-${lineIndex}`} className="reading-surface__direction">{line.replace(/^\*/, "").replace(/\*$/, "")}</p>;
+                          }
+                          if (/^\*\*.+\*\*$/.test(line)) {
+                            return <p key={`${stanzaIndex}-${lineIndex}`} className="reading-surface__emphasis">{line.replace(/^\*\*/, "").replace(/\*\*$/, "")}</p>;
+                          }
+                          return <p key={`${stanzaIndex}-${lineIndex}`}>{line}</p>;
+                        })}
                       </div>
                     ));
                   })()}

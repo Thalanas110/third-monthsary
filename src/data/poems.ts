@@ -1,9 +1,12 @@
+import everyVersionAudio from "@assets/Every Version of Us.mp3";
+
 export interface Poem {
   id: string;
   numeral: string;
   title: string;
   tagline: string;
   content: string[];
+  audioSrc?: string;
 }
 
 export const poems: Poem[] = [
@@ -289,7 +292,7 @@ export const poems: Poem[] = [
   },
   {
     id: "pagkatapos-kan-trabaho",
-    numeral: "X",
+    numeral: "VI",
     title: "Pagkatapos kan Trabaho",
     tagline: "The end of work, the beginning of something more.",
     content: [
@@ -421,7 +424,7 @@ export const poems: Poem[] = [
   },
   {
     id: "gabos-na-bersyon-mo",
-    numeral: "XI",
+    numeral: "VII",
     title: "Gabos na Bersyon Mo",
     tagline: "Every version of you, I love them all.",
     content: [
@@ -508,7 +511,7 @@ export const poems: Poem[] = [
   },
   {
     id: "kaiba-taka-sa-ibabaw-kan-dampog",
-    numeral: "XII",
+    numeral: "VIII",
     title: "Kaiba Taka sa Ibabaw kan mga Dampog",
     tagline: "Flying together, grounded in love.",
     content: [
@@ -571,6 +574,103 @@ export const poems: Poem[] = [
       "Pero an puso ko naglilipad pa,",
       "Kaiba ka, mas may saysay an flight,",
       "Maglilipad ako kaiba ka pirmi."
+    ]
+  },
+  {
+    id: "every-version-of-us",
+    numeral: "IX",
+    title: "Every Version of Us",
+    tagline: "A song for every season of us.",
+    audioSrc: everyVersionAudio,
+    content: [
+      "[Piano Intro]",
+      "*Soft, sparse chords. 4 bars.*",
+      "",
+      "[Verse 1]",
+      "I still remember when your name felt new,",
+      "A little spark that slowly pulled me through.",
+      "One simple message changed the shape of days,",
+      "And somehow drew my heart into your ways.",
+      "",
+      "I learned your laugh, your silence, and your fears,",
+      "The way your words could calm my restless years.",
+      "And every morning, after prayer was done,",
+      "I checked for you before the day begun.",
+      "",
+      "[Pre-Chorus]",
+      "Through every pause, through every mile apart,",
+      "You found a quiet home inside my heart.",
+      "And even when the world would pull away,",
+      "I knew I still would choose you every day.",
+      "",
+      "[Chorus]",
+      "I love each version time has shown of you,",
+      "The bright, the tired, the scared, the stubborn too.",
+      "Through every rise and every fall we knew,",
+      "My heart kept finding its way back to you.",
+      "",
+      "And if tomorrow changes all we see,",
+      "There is one truth that will not change in me.",
+      "Whatever life may put our love through,",
+      "I'll still be here, still choosing only you.",
+      "",
+      "[Short Piano Turnaround]",
+      "",
+      "[Verse 2]",
+      "There were long nights when silence filled the phone,",
+      "And all I wished was bringing you back home.",
+      "I hated knowing walls could keep you there,",
+      "While all I had were messages and prayer.",
+      "",
+      "We had our fights, our sharp and wounded days,",
+      "Yet somehow love kept finding kinder ways.",
+      "We learned to listen, heal, and start anew,",
+      "And every storm kept leading me to you.",
+      "",
+      "[Pre-Chorus]",
+      "I never loved some perfect, easy side,",
+      "I loved the whole of you I found inside.",
+      "The girl who laughs, the girl who needs to cry,",
+      "The girl I still would choose beneath each sky.",
+      "",
+      "[Bridge]",
+      "*Gentle 6/8 feel.*",
+      "",
+      "I dream of ordinary days with you,",
+      "A quiet home, a life both warm and true.",
+      "No glowing screen between your hand and mine,",
+      "No counting hours, no waiting for a sign.",
+      "",
+      "A morning prayer, a room, a cup of tea,",
+      "And waking up with you right next to me.",
+      "If Heaven heard the prayers I could not say,",
+      "Perhaps His grace has led us all this way.",
+      "",
+      "[Final Chorus]",
+      "I love each version time has shown of you,",
+      "The soft, the fierce, the broken, hopeful too.",
+      "Through every tear and every dream we knew,",
+      "My whole tomorrow still begins with you.",
+      "",
+      "And when the years have changed the world we see,",
+      "I hope you'll turn and still be next to me.",
+      "Through every season waiting down the road,",
+      "I'll share your joy and help you bear the load.",
+      "",
+      "I do not need a perfect life to prove,",
+      "How deep my heart has learned to hold this love.",
+      "If all our story changed a thousand ways,",
+      "I'd wake each morning still in love with you.",
+      "",
+      "[Outro]",
+      "So when you wonder what you mean to me,",
+      "Look at the life I still can almost see.",
+      "Through every version, this remains my truth:",
+      "My favorite future always starts with you.",
+      "",
+      "*Piano resolves softly.*",
+      "",
+      "**My favorite future always starts with you.**"
     ]
   }
 ];
